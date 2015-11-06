@@ -7,7 +7,7 @@ using Microsoft.Owin.Security.Infrastructure;
 
 namespace OwinStatefulAuthentication
 {
-    public class StatefullAuthenticationHandler : AuthenticationHandler<StatefulAuthenticationOptions>
+    public class StatefulAuthenticationHandler : AuthenticationHandler<StatefulAuthenticationOptions>
     {
         protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {

@@ -4,13 +4,13 @@ using Owin;
 
 namespace OwinStatefulAuthentication
 {
-    public static class StatefullAuthenticationExtensions
+    public static class StatefulAuthenticationExtensions
     {
         /// <summary>
-        /// Adds statefull token processing to OWIN application pipeline; Options with token repository must be set.
+        /// Adds stateful token processing to OWIN application pipeline; Options with token repository must be set.
         /// </summary>
         /// <param name="options">Options which control the processing of the bearer header</param>
-        public static IAppBuilder UseStatefullAuthentication(this IAppBuilder app, StatefulAuthenticationOptions options)
+        public static IAppBuilder UseStatefulAuthentication(this IAppBuilder app, StatefulAuthenticationOptions options)
         {
             if (app == null)
                 throw new ArgumentNullException("app");
@@ -21,10 +21,10 @@ namespace OwinStatefulAuthentication
         }
 
         /// <summary>
-        /// Adds statefull token processing to OWIN application pipeline; Options with token repository must be set.
+        /// Adds stateful token processing to OWIN application pipeline; Options with token repository must be set.
         /// </summary>
         /// <param name="userFromToken">Async function to retrieve unique username from token</param>
-        public static IAppBuilder UseStatefullAuthentication(this IAppBuilder app, Func<string, Task<string>> userFromToken)
+        public static IAppBuilder UseStatefulAuthentication(this IAppBuilder app, Func<string, Task<string>> userFromToken)
         {
             if (app == null)
                 throw new ArgumentNullException("app");

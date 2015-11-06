@@ -19,7 +19,7 @@ namespace OwinStatefulAuthentication
 
         protected override AuthenticationHandler<StatefulAuthenticationOptions> CreateHandler()
         {
-            return new StatefullAuthenticationHandler();
+            return new StatefulAuthenticationHandler();
         }
     }
 }
