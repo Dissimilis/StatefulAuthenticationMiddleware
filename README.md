@@ -1,5 +1,5 @@
 # StatefulAuthenticationMiddleware
-OWIN statefull token authentication middleware (for when you want to store token in database)
+OWIN stateful token authentication middleware (for when you want to store token in database)
 
 See WebApiDemo project for usage demo
 
@@ -18,7 +18,7 @@ public class Startup
       ); 
       //there you can pass func for getting username from token
       //for more fine grained controll you can override StatefulTokenProvider.GetIdentityAsync
-      app.UseStatefullAuthentication((token)=>Task.FromResult(token == "abcxyz123" ? "JohnSmith" : null));
+      app.UseStatefulAuthentication((token)=>Task.FromResult(token == "abcxyz123" ? "JohnSmith" : null));
       app.UseWebApi(config);
     }
 }
