@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>OwinStatefulAuthentication</id>
+    <version>1.0.0</version>
+    <authors>Marius Vitkevičius</authors>
+    <owners>Marius Vitkevičius</owners>
+    <description>Simple OWIN stateful token authentication middleware for when you want to store token in database</description>
+    <language>en-US</language>
+    <projectUrl>https://github.com/Dissimilis/StatefulAuthenticationMiddleware</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/Dissimilis/StatefulAuthenticationMiddleware/master/LICENSE</licenseUrl>
+    <tags>OWIN WebApi Security Token Stateful Authentication</tags>
+    <dependencies>
+      <dependency id="OWIN" version="1.0" />
+	  <dependency id="Microsoft.Owin" version="3.0.1" />
+	  <dependency id="Microsoft.Owin.Security" version="3.0.1" />
+    </dependencies>
+  </metadata> 
+  <files>
+    <file src="bin\Release\OwinStatefulAuthentication.dll" target="lib\OwinStatefulAuthentication.dll" />
+    <file src="bin\Release\OwinStatefulAuthentication.xml" target="lib\OwinStatefulAuthentication.xml" />
+  </files>
+</package>
