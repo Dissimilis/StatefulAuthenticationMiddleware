@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -8,11 +9,17 @@ namespace OwinStatefulAuthentication
 {
     /// <summary>
     /// Repository for getting identity based on token
-    /// Override GetIdentityAsync if you want to controll ClaimsIdentity creation (i.e. for setting roles)
+    /// Override GetIdentityAsync if you want to controll ClaimsIdentity creation
     /// </summary>
     public class StatefulTokenProvider
     {
         private readonly Func<string, Task<string>> _userFromToken;
+        private readonly Func<string, Task<UserWithRoles>> _userWithRolesFromToken;
+
+
+
+        protected StatefulTokenProvider() { }
+
 
         /// <param name="userFromTokenAsync">Async function for getting unique user name</param>
         public StatefulTokenProvider(Func<string, Task<string>> userFromTokenAsync)
@@ -22,12 +29,28 @@ namespace OwinStatefulAuthentication
             _userFromToken = userFromTokenAsync;
         }
 
-        /// <param name="userFromTokenAsync">Function for getting unique user name</param>
+        /// <param name="userFromToken">Function for getting unique user name</param>
         public StatefulTokenProvider(Func<string, string> userFromToken)
         {
             if (userFromToken == null)
                 throw new ArgumentNullException("userFromToken");
             _userFromToken = (t) => Task.FromResult(userFromToken(t));
+        }
+
+        /// <param name="userFromTokenAsync">Async function for getting unique user with roles (roles will be set as ClaimType.Role)</param>
+        public StatefulTokenProvider(Func<string, Task<UserWithRoles>> userFromTokenAsync)
+        {
+            if (userFromTokenAsync == null)
+                throw new ArgumentNullException("userFromTokenAsync");
+            _userWithRolesFromToken = userFromTokenAsync;
+        }
+
+        /// <param name="userFromToken">Function for getting unique user with roles (roles will be set as ClaimType.Role)</param>
+        public StatefulTokenProvider(Func<string, UserWithRoles> userFromToken)
+        {
+            if (userFromToken == null)
+                throw new ArgumentNullException("userFromToken");
+            _userWithRolesFromToken = (t) => Task.FromResult(userFromToken(t));
         }
 
         /// <summary>
@@ -39,13 +62,28 @@ namespace OwinStatefulAuthentication
         {
             if (string.IsNullOrEmpty(token) || token.Length > 4000) //dont call repository when token is too large
                 return null;
-            var identityName = await _userFromToken(token);
-            if (!String.IsNullOrEmpty(identityName))
+            if (_userFromToken != null)
             {
-                var claims = new[] {new Claim(ClaimTypes.Name, identityName)};
-                var identity = new ClaimsIdentity(claims, scheme) { BootstrapContext = token };
-                
-                return identity;
+                var identityName = await _userFromToken(token);
+                if (!String.IsNullOrEmpty(identityName))
+                {
+                    var claims = new[] {new Claim(ClaimTypes.Name, identityName)};
+                    var identity = new ClaimsIdentity(claims, scheme) {BootstrapContext = token};
+
+                    return identity;
+                }
+            }
+            else //with roles
+            {
+                var user = await _userWithRolesFromToken(token);
+                if (user != null && !String.IsNullOrEmpty(user.UserName))
+                {
+                    var claims = new List<Claim>(12) {new Claim(ClaimTypes.Name, user.UserName)};
+                    if (user.Roles != null)
+                        claims.AddRange(user.Roles.Select(r => new Claim(ClaimTypes.Role, r)));
+                    var identity = new ClaimsIdentity(claims, scheme) { BootstrapContext = token };
+                    return identity;
+                }
             }
             return null;
         }
@@ -66,6 +104,18 @@ namespace OwinStatefulAuthentication
             }
             string token = Convert.ToBase64String(tokenData);
             return token;
+        }
+    }
+
+    public class UserWithRoles
+    {
+        public string UserName { get; set; }
+        public IEnumerable<string> Roles { get; set; }
+        
+        public UserWithRoles (string username, IEnumerable<string> roles = null)
+        {
+            UserName = username;
+            Roles = roles;
         }
     }
 }

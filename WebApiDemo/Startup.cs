@@ -20,9 +20,11 @@ namespace WebApiDemo
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            ); 
+            );
 
-            app.UseStatefullAuthentication(Program.GetUser);
+            //there you can pass func for getting username from token
+            //for more fine grained controll you can override StatefulTokenProvider.GetIdentityAsync
+            app.UseStatefullAuthentication((token)=>Task.FromResult(token == "abcxyz123" ? "JohnSmith" : null));
 
             app.UseWebApi(config);
         }
