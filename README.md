@@ -1,5 +1,5 @@
 # StatefulAuthenticationMiddleware
-OWIN statefull token authentication middleware (for when you want to store token in database)
+OWIN stateful token authentication middleware (for when you want to store token in database)
 
 See WebApiDemo project for usage demo
 
