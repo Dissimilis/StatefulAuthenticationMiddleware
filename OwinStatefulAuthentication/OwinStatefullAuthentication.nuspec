@@ -2,7 +2,8 @@
 <package>
   <metadata>
     <id>OwinStatefulAuthentication</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
+	<title>OwinStatefulAuthentication</title>
     <authors>Marius Vitkevičius</authors>
     <owners>Marius Vitkevičius</owners>
     <description>Simple OWIN stateful token authentication middleware for when you want to store token in database</description>

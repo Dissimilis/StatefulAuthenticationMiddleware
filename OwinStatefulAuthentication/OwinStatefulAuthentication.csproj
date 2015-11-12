@@ -58,8 +58,8 @@
     <Compile Include="StatefulAuthenticationMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatefulAuthenticationOptions.cs" />
-    <Compile Include="StatefullAuthenticationExtensions.cs" />
-    <Compile Include="StatefullAuthenticationHandler.cs" />
+    <Compile Include="StatefulAuthenticationExtensions.cs" />
+    <Compile Include="StatefulAuthenticationHandler.cs" />
     <Compile Include="StatefulTokenProvider.cs" />
   </ItemGroup>
   <ItemGroup>

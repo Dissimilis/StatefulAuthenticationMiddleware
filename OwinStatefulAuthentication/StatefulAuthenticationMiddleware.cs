@@ -12,14 +12,17 @@ namespace OwinStatefulAuthentication
 {
     public class StatefulAuthenticationMiddleware : AuthenticationMiddleware<StatefulAuthenticationOptions>
     {
-        public StatefulAuthenticationMiddleware(OwinMiddleware next,IAppBuilder app, StatefulAuthenticationOptions options) : base(next, options)
-        {
+        private ILogger _logger;
 
+        public StatefulAuthenticationMiddleware(OwinMiddleware next, IAppBuilder app, StatefulAuthenticationOptions options)
+            : base(next, options)
+        {
+            _logger = app.CreateLogger<StatefulAuthenticationHandler>();
         }
 
         protected override AuthenticationHandler<StatefulAuthenticationOptions> CreateHandler()
         {
-            return new StatefulAuthenticationHandler();
+            return new StatefulAuthenticationHandler(_logger);
         }
     }
 }
